@@ -1,39 +1,39 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
-import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuIndicator,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
-    NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
 import { ThemeProvider } from "./components/theme-provider";
-import ModeToggle from "./components/mode-toggle";
+import ResumeUpload from "./components/ResumeUpload";
+import { Provider } from "react-redux";
+import { store } from "../redux/store";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import Navbar from "./components/Navbar";
+import ProcessResume from "./components/ProcessResume";
+
 
 function App() {
-    // const router = createBrowserRouter();
+    const router = createBrowserRouter([
+        {
+            path: "/",
+            element: <Navbar />,
+            children: [
+                {
+                    path: "/upload",
+                    element: <ResumeUpload />,
+                },
+                {
+                    path: "/process-form",
+                    element: <ProcessResume />,
+                }
+            ],
+        },
+    ]);
     return (
-        <ThemeProvider>
-            <div>
-                <h1 className="text-3xl font-bold underline">Hello World!</h1>
-                <NavigationMenu>
-                    <NavigationMenuList>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger>
-                                Item One
-                            </NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <NavigationMenuLink>Link</NavigationMenuLink>
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                    </NavigationMenuList>
-                </NavigationMenu>
-            </div>
-            <ModeToggle />
-        </ThemeProvider>
+        <Provider store={store}>
+            <ThemeProvider>
+                <RouterProvider router={router} />
+                <ToastContainer />
+            </ThemeProvider>
+        </Provider>
     );
 }
 
